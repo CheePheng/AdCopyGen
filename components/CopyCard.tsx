@@ -46,15 +46,16 @@ export function CopyCard({
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.1, duration: 0.35, ease: "easeOut" }}
+      initial={{ opacity: 0, y: 30, scale: 0.97 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      transition={{ delay: index * 0.08, type: "spring", stiffness: 100, damping: 20, mass: 0.8 }}
       className={cn(
-        "group relative p-5 rounded-xl",
-        "backdrop-blur-sm bg-white/60 dark:bg-slate-800/60",
-        "border border-white/20 dark:border-slate-700/50",
+        "group relative p-5 rounded-xl card-shimmer",
+        "backdrop-blur-sm bg-white/60 dark:bg-white/[0.03]",
+        "border border-white/20 dark:border-white/[0.06]",
         "shadow-sm hover:shadow-lg hover:-translate-y-0.5",
-        "transition-all duration-300"
+        "transition-all duration-300",
+        "dark:hover:shadow-[0_0_30px_oklch(0.68_0.20_293_/_0.15)] dark:hover:border-violet-500/20"
       )}
     >
       {/* Card number */}
@@ -73,11 +74,11 @@ export function CopyCard({
         <div className="flex items-center gap-1">
           {/* Copy button */}
           <motion.button
-            whileHover={{ scale: 1.1 }}
+            whileHover={{ scale: 1.08 }}
             whileTap={{ scale: 0.9 }}
             onClick={handleCopy}
             title="Copy to clipboard"
-            className="flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground hover:text-violet-600 hover:bg-violet-50 dark:hover:bg-violet-900/20 transition-colors duration-150"
+            className="flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground hover:text-violet-600 hover:bg-violet-50 dark:hover:bg-violet-500/10 transition-colors duration-150"
           >
             {copied ? (
               <Check className="h-4 w-4 text-green-500" />
@@ -88,7 +89,7 @@ export function CopyCard({
 
           {/* Star / Favorite button */}
           <motion.button
-            whileHover={{ scale: 1.1 }}
+            whileHover={{ scale: 1.08 }}
             whileTap={{ scale: 0.9 }}
             animate={isFavorited ? { scale: [1, 1.3, 1] } : { scale: 1 }}
             transition={{ duration: 0.25 }}
@@ -106,13 +107,13 @@ export function CopyCard({
 
           {/* Regenerate button */}
           <motion.button
-            whileHover={{ scale: 1.1 }}
+            whileHover={{ scale: 1.08 }}
             whileTap={{ scale: 0.9 }}
             animate={spinning ? { rotate: 360 } : { rotate: 0 }}
             transition={spinning ? { duration: 0.6, ease: "easeInOut" } : { duration: 0 }}
             onClick={handleRegenerate}
             title="Regenerate this copy"
-            className="flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground hover:text-violet-600 hover:bg-violet-50 dark:hover:bg-violet-900/20 transition-colors duration-150"
+            className="flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground hover:text-violet-600 hover:bg-violet-50 dark:hover:bg-violet-500/10 transition-colors duration-150"
           >
             <RefreshCw className="h-4 w-4" />
           </motion.button>

@@ -30,8 +30,8 @@ function SkeletonCard({ index }: { index: number }) {
       transition={{ delay: index * 0.07, duration: 0.3, ease: "easeOut" }}
       className={cn(
         "p-5 rounded-xl",
-        "backdrop-blur-sm bg-white/60 dark:bg-slate-800/60",
-        "border border-white/20 dark:border-slate-700/50"
+        "backdrop-blur-sm bg-white/60 dark:bg-white/[0.03]",
+        "border border-white/20 dark:border-white/[0.06]"
       )}
     >
       <Skeleton className="h-3 w-8 mb-3 bg-muted/60" />
@@ -120,10 +120,10 @@ export function OutputPanel({
                 onClick={onRegenerateAll}
                 className={cn(
                   "h-8 gap-1.5 text-xs font-medium rounded-lg",
-                  "backdrop-blur-sm bg-white/50 dark:bg-slate-800/50",
-                  "border-white/20 dark:border-slate-700/50",
+                  "backdrop-blur-sm bg-white/50 dark:bg-white/[0.04]",
+                  "border-white/20 dark:border-white/[0.08]",
                   "hover:bg-violet-50 hover:border-violet-300 hover:text-violet-700",
-                  "dark:hover:bg-violet-900/20 dark:hover:border-violet-600 dark:hover:text-violet-400",
+                  "dark:hover:bg-violet-500/10 dark:hover:border-violet-500/40 dark:hover:text-violet-400",
                   "transition-all duration-200"
                 )}
               >
