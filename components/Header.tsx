@@ -25,10 +25,10 @@ export function Header({ onToggleFavorites, favoritesCount }: HeaderProps) {
       initial={{ opacity: 0, y: -16 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-      className="sticky top-0 z-50 w-full backdrop-blur-xl bg-white/70 dark:bg-slate-900/70 border-b border-white/20"
+      className="sticky top-0 z-50 w-full backdrop-blur-2xl bg-white/60 dark:bg-white/[0.02] header-glow-line"
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex h-16 items-center justify-between">
+        <div className="flex h-[4.5rem] items-center justify-between">
           {/* Left: Logo + Tagline */}
           <div className="flex flex-col justify-center">
             {/* Logo row */}
@@ -44,22 +44,23 @@ export function Header({ onToggleFavorites, favoritesCount }: HeaderProps) {
                 className="flex items-center justify-center"
               >
                 <Sparkles
-                  className="size-5 text-violet-500 dark:text-violet-400"
+                  className="size-6 text-violet-500 dark:text-violet-400"
                   aria-hidden="true"
                 />
               </motion.div>
               <span
                 className={cn(
-                  "text-xl font-bold tracking-tight",
+                  "text-2xl font-bold tracking-[-0.03em]",
                   "bg-gradient-to-r from-violet-600 to-purple-600",
                   "bg-clip-text text-transparent"
                 )}
+                style={{ filter: "drop-shadow(0 0 20px oklch(0.68 0.20 293 / 0.4))" }}
               >
                 AdCopyGen
               </span>
             </div>
             {/* Tagline — hidden on mobile */}
-            <p className="hidden sm:block text-xs text-muted-foreground leading-none mt-0.5 pl-7">
+            <p className="hidden sm:block text-[11px] tracking-wide text-muted-foreground/60 leading-none mt-0.5 pl-8">
               AI-powered marketing copy in seconds
             </p>
           </div>
