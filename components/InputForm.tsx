@@ -25,23 +25,23 @@ interface InputFormProps {
 const VARIATION_OPTIONS: VariationCount[] = [3, 5, 10];
 
 const labelClass =
-  "text-xs font-medium uppercase tracking-wide text-muted-foreground mb-2 block";
+  "text-[11px] font-semibold uppercase tracking-[0.08em] text-muted-foreground/80 mb-2.5 block";
 
 const inputClass = cn(
   "h-10 w-full rounded-xl transition-all duration-200",
-  "backdrop-blur-sm bg-white/50 dark:bg-slate-800/50",
-  "border border-white/20 dark:border-slate-700/50",
+  "backdrop-blur-sm bg-white/50 dark:bg-white/[0.04]",
+  "border border-white/20 dark:border-white/[0.08]",
   "focus-visible:ring-2 focus-visible:ring-violet-500/50 focus-visible:border-violet-500/50",
-  "hover:border-violet-300 dark:hover:border-violet-600",
+  "hover:border-violet-300 dark:hover:border-violet-500/40",
   "placeholder:text-muted-foreground/60 text-sm px-3"
 );
 
 const textareaClass = cn(
   "w-full rounded-xl transition-all duration-200 min-h-0 resize-none",
-  "backdrop-blur-sm bg-white/50 dark:bg-slate-800/50",
-  "border border-white/20 dark:border-slate-700/50",
+  "backdrop-blur-sm bg-white/50 dark:bg-white/[0.04]",
+  "border border-white/20 dark:border-white/[0.08]",
   "focus-visible:ring-2 focus-visible:ring-violet-500/50 focus-visible:border-violet-500/50",
-  "hover:border-violet-300 dark:hover:border-violet-600",
+  "hover:border-violet-300 dark:hover:border-violet-500/40",
   "placeholder:text-muted-foreground/60 text-sm px-3 py-2.5"
 );
 
@@ -167,7 +167,7 @@ export function InputForm({ onGenerate, isLoading }: InputFormProps) {
       </div>
 
       {/* Divider */}
-      <div className="border-t border-white/10 dark:border-slate-700/30" />
+      <div className="divider-gradient" />
 
       {/* Key Benefits / USPs */}
       <div>
@@ -239,7 +239,7 @@ export function InputForm({ onGenerate, isLoading }: InputFormProps) {
                   "flex-1 h-10 rounded-xl border text-sm font-semibold transition-all duration-200 cursor-pointer",
                   isSelected
                     ? "bg-gradient-to-r from-violet-600 to-purple-600 border-transparent text-white shadow-md shadow-violet-500/20"
-                    : "backdrop-blur-sm bg-white/50 dark:bg-slate-800/50 border-white/20 dark:border-slate-700/50 text-foreground hover:border-violet-300 dark:hover:border-violet-600"
+                    : "backdrop-blur-sm bg-white/50 dark:bg-white/[0.04] border-white/20 dark:border-white/[0.08] text-foreground hover:border-violet-300 dark:hover:border-violet-500/40"
                 )}
               >
                 {count}
@@ -253,31 +253,42 @@ export function InputForm({ onGenerate, isLoading }: InputFormProps) {
       <motion.button
         type="submit"
         disabled={isDisabled}
+        whileHover={!isDisabled ? { scale: 1.01 } : {}}
         whileTap={!isDisabled ? { scale: 0.98 } : {}}
         transition={{ type: "spring", stiffness: 400, damping: 20 }}
         animate={isLoading ? { opacity: [1, 0.85, 1] } : { opacity: 1 }}
         className={cn(
-          "relative w-full h-14 rounded-xl font-bold text-white text-base",
+          "relative w-full h-14 rounded-xl font-bold text-white text-base overflow-hidden",
           "bg-gradient-to-r from-violet-600 to-purple-600",
-          "shadow-lg shadow-violet-500/25",
+          "shadow-xl shadow-violet-500/30",
           "transition-all duration-200",
           "flex items-center justify-center gap-2.5",
           !isDisabled &&
-            "hover:from-violet-500 hover:to-purple-500 hover:shadow-violet-500/40",
+            "hover:from-violet-500 hover:to-purple-500 hover:shadow-violet-500/50",
           isDisabled && "opacity-60 cursor-not-allowed"
         )}
       >
-        {isLoading ? (
-          <>
-            <Loader2 className="size-5 animate-spin" />
-            <span>Generating...</span>
-          </>
-        ) : (
-          <>
-            <Sparkles className="size-5" />
-            <span>Generate Copy</span>
-          </>
+        {/* Shimmer sweep */}
+        {!isDisabled && (
+          <motion.span
+            className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12"
+            animate={{ x: ["-200%", "200%"] }}
+            transition={{ duration: 3, repeat: Infinity, ease: "linear", repeatDelay: 2 }}
+          />
         )}
+        <span className="relative z-10 flex items-center gap-2.5">
+          {isLoading ? (
+            <>
+              <Loader2 className="size-5 animate-spin" />
+              <span>Generating...</span>
+            </>
+          ) : (
+            <>
+              <Sparkles className="size-5" />
+              <span>Generate Copy</span>
+            </>
+          )}
+        </span>
       </motion.button>
     </form>
   );
