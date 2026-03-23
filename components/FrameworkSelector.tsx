@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { BookOpen, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Framework, FRAMEWORK_INFO } from "@/lib/types";
+import { useT } from "@/hooks/useLocale";
 
 interface FrameworkSelectorProps {
   value: Framework | undefined;
@@ -14,6 +15,7 @@ interface FrameworkSelectorProps {
 const FRAMEWORKS = Object.keys(FRAMEWORK_INFO) as Framework[];
 
 export function FrameworkSelector({ value, onChange }: FrameworkSelectorProps) {
+  const t = useT();
   const [isOpen, setIsOpen] = useState(false);
 
   const handleSelect = (fw: Framework) => {
@@ -36,8 +38,8 @@ export function FrameworkSelector({ value, onChange }: FrameworkSelectorProps) {
       >
         <span className="flex items-center gap-2">
           <BookOpen className="size-4 text-violet-500" />
-          <span>Copywriting Framework</span>
-          <span className="text-xs text-muted-foreground font-normal">(Optional)</span>
+          <span>{t("framework.title")}</span>
+          <span className="text-xs text-muted-foreground font-normal">{t("framework.optional")}</span>
           {value && (
             <span className="ml-1 rounded-full bg-violet-100 dark:bg-violet-900/40 px-2 py-0.5 text-[10px] font-semibold text-violet-700 dark:text-violet-300">
               {FRAMEWORK_INFO[value].name}
@@ -64,7 +66,8 @@ export function FrameworkSelector({ value, onChange }: FrameworkSelectorProps) {
           >
             <div className="grid grid-cols-2 gap-3 pt-1">
               {FRAMEWORKS.map((fw) => {
-                const { name, description } = FRAMEWORK_INFO[fw];
+                const { name } = FRAMEWORK_INFO[fw];
+                const description = t(`framework.${fw}.desc`);
                 const isSelected = value === fw;
 
                 return (

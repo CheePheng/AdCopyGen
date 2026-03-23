@@ -1,25 +1,31 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { motion } from "framer-motion";
 import { Sparkles } from "lucide-react";
-
-const SAMPLE_COPIES = [
-  "Transform your ideas into revenue.",
-  "The AI copywriter that never sleeps.",
-  "Words that sell, powered by intelligence.",
-  "Stop writing. Start converting.",
-  "Your brand voice, amplified by AI.",
-];
+import { useT } from "@/hooks/useLocale";
 
 export function EmptyState() {
+  const t = useT();
+  const sampleCopies = useMemo(() => [
+    t("empty.sample.0"), t("empty.sample.1"), t("empty.sample.2"),
+    t("empty.sample.3"), t("empty.sample.4"),
+  ], [t]);
+
   const [displayText, setDisplayText] = useState("");
   const [copyIndex, setCopyIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
+  // Reset typewriter when locale changes
   useEffect(() => {
-    const current = SAMPLE_COPIES[copyIndex % SAMPLE_COPIES.length];
+    setDisplayText("");
+    setCopyIndex(0);
+    setIsDeleting(false);
+  }, [t]);
+
+  useEffect(() => {
+    const current = sampleCopies[copyIndex % sampleCopies.length];
 
     timeoutRef.current = setTimeout(
       () => {
@@ -45,7 +51,7 @@ export function EmptyState() {
     return () => {
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
     };
-  }, [displayText, isDeleting, copyIndex]);
+  }, [displayText, isDeleting, copyIndex, sampleCopies]);
 
   return (
     <div className="relative flex h-full min-h-[480px] items-center justify-center overflow-hidden rounded-2xl">
@@ -83,7 +89,7 @@ export function EmptyState() {
 
         {/* Heading */}
         <h2 className="text-3xl font-bold tracking-[-0.03em] gradient-text">
-          Create Copy That Converts
+          {t("empty.heading")}
         </h2>
 
         {/* Typewriter area */}
@@ -91,7 +97,7 @@ export function EmptyState() {
           <div className="mb-3 flex items-center gap-2">
             <div className="h-2 w-2 rounded-full bg-green-400 glow-breathe" />
             <span className="text-[11px] font-medium uppercase tracking-wide text-muted-foreground/60">
-              AI generating...
+              {t("empty.aiGenerating")}
             </span>
           </div>
           <p className="min-h-[2em] text-left text-lg font-medium leading-relaxed text-foreground">
@@ -106,7 +112,7 @@ export function EmptyState() {
 
         {/* Instruction */}
         <p className="max-w-xs text-sm leading-relaxed text-muted-foreground/60">
-          Fill in your product details and hit Generate.
+          {t("empty.instruction")}
         </p>
       </div>
     </div>

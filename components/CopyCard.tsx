@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { Clipboard, Check, Star, RefreshCw } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
+import { useT } from "@/hooks/useLocale";
 
 interface CopyCardProps {
   text: string;
@@ -25,6 +26,7 @@ export function CopyCard({
   onRegenerate,
   charLimit,
 }: CopyCardProps) {
+  const t = useT();
   const [copied, setCopied] = useState(false);
   const [spinning, setSpinning] = useState(false);
 
@@ -77,7 +79,7 @@ export function CopyCard({
             whileHover={{ scale: 1.08 }}
             whileTap={{ scale: 0.9 }}
             onClick={handleCopy}
-            title="Copy to clipboard"
+            title={t("card.copyToClipboard")}
             className="flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground hover:text-violet-600 hover:bg-violet-50 dark:hover:bg-violet-500/10 transition-colors duration-150"
           >
             {copied ? (
@@ -94,7 +96,7 @@ export function CopyCard({
             animate={isFavorited ? { scale: [1, 1.3, 1] } : { scale: 1 }}
             transition={{ duration: 0.25 }}
             onClick={onToggleFavorite}
-            title={isFavorited ? "Remove from favorites" : "Add to favorites"}
+            title={isFavorited ? t("card.removeFromFavorites") : t("card.addToFavorites")}
             className="flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground hover:text-amber-500 hover:bg-amber-50 dark:hover:bg-amber-900/20 transition-colors duration-150"
           >
             <Star
@@ -112,7 +114,7 @@ export function CopyCard({
             animate={spinning ? { rotate: 360 } : { rotate: 0 }}
             transition={spinning ? { duration: 0.6, ease: "easeInOut" } : { duration: 0 }}
             onClick={handleRegenerate}
-            title="Regenerate this copy"
+            title={t("card.regenerate")}
             className="flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground hover:text-violet-600 hover:bg-violet-50 dark:hover:bg-violet-500/10 transition-colors duration-150"
           >
             <RefreshCw className="h-4 w-4" />
@@ -127,7 +129,7 @@ export function CopyCard({
             isOverLimit && "bg-amber-100 text-amber-700 border-amber-200 dark:bg-amber-900/30 dark:text-amber-400 dark:border-amber-700/50"
           )}
         >
-          {text.length} chars
+          {text.length} {t("card.chars")}
           {charLimit && isOverLimit && ` / ${charLimit}`}
         </Badge>
       </div>

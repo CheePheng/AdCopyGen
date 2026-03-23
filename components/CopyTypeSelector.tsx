@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { CopyType, COPY_TYPE_LABELS } from "@/lib/types";
+import { useT } from "@/hooks/useLocale";
 
 interface CopyTypeSelectorProps {
   value: CopyType;
@@ -12,10 +13,13 @@ interface CopyTypeSelectorProps {
 const COPY_TYPES = Object.keys(COPY_TYPE_LABELS) as CopyType[];
 
 export function CopyTypeSelector({ value, onChange }: CopyTypeSelectorProps) {
+  const t = useT();
   return (
     <div className="grid grid-cols-2 gap-2.5">
       {COPY_TYPES.map((type) => {
-        const { label, emoji, description } = COPY_TYPE_LABELS[type];
+        const { emoji } = COPY_TYPE_LABELS[type];
+        const label = t(`copyType.${type}`);
+        const description = t(`copyType.${type}.desc`);
         const isSelected = value === type;
 
         return (

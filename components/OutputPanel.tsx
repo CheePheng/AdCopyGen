@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import { CopyType, COPY_TYPE_LABELS } from "@/lib/types";
+import { useT } from "@/hooks/useLocale";
 import { CopyCard } from "@/components/CopyCard";
 import { EmptyState } from "@/components/EmptyState";
 
@@ -61,7 +62,8 @@ export function OutputPanel({
   onRegenerateAll,
   isFavorited,
 }: OutputPanelProps) {
-  const typeLabel = COPY_TYPE_LABELS[copyType]?.label ?? "Generated Copy";
+  const t = useT();
+  const typeLabel = t(`copyType.${copyType}`) || t("output.generatedCopy");
 
   return (
     <div className="flex flex-col h-full">
@@ -128,7 +130,7 @@ export function OutputPanel({
                 )}
               >
                 <RefreshCw className="h-3.5 w-3.5" />
-                Regenerate All
+                {t("output.regenerateAll")}
               </Button>
             </div>
 

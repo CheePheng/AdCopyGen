@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 import { Tone, TONE_LABELS } from "@/lib/types";
+import { useT } from "@/hooks/useLocale";
 
 interface ToneSelectorProps {
   value: Tone;
@@ -18,6 +19,7 @@ interface ToneSelectorProps {
 const TONES = Object.keys(TONE_LABELS) as Tone[];
 
 export function ToneSelector({ value, onChange }: ToneSelectorProps) {
+  const t = useT();
   return (
     <Select
       value={value}
@@ -33,7 +35,7 @@ export function ToneSelector({ value, onChange }: ToneSelectorProps) {
           "text-sm"
         )}
       >
-        <SelectValue placeholder="Select a tone..." />
+        <SelectValue placeholder={t("tone.placeholder")} />
       </SelectTrigger>
       <SelectContent className="backdrop-blur-sm bg-white/95 dark:bg-slate-900/95 border border-white/20 dark:border-slate-700/50 rounded-xl shadow-xl">
         {TONES.map((tone) => (
@@ -42,7 +44,7 @@ export function ToneSelector({ value, onChange }: ToneSelectorProps) {
             value={tone}
             className="rounded-lg cursor-pointer hover:bg-violet-50 dark:hover:bg-violet-900/20 focus:bg-violet-50 dark:focus:bg-violet-900/20"
           >
-            {TONE_LABELS[tone]}
+            {t(`tone.${tone}`)}
           </SelectItem>
         ))}
       </SelectContent>

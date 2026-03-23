@@ -16,6 +16,7 @@ import {
 import { CopyTypeSelector } from "@/components/CopyTypeSelector";
 import { ToneSelector } from "@/components/ToneSelector";
 import { FrameworkSelector } from "@/components/FrameworkSelector";
+import { useT } from "@/hooks/useLocale";
 
 interface InputFormProps {
   onGenerate: (data: GenerateRequest) => void;
@@ -46,6 +47,7 @@ const textareaClass = cn(
 );
 
 export function InputForm({ onGenerate, isLoading }: InputFormProps) {
+  const t = useT();
   const [productName, setProductName] = useState("");
   const [description, setDescription] = useState("");
   const [targetAudience, setTargetAudience] = useState("");
@@ -112,12 +114,12 @@ export function InputForm({ onGenerate, isLoading }: InputFormProps) {
     <form onSubmit={handleSubmit} className="space-y-5">
       {/* Product / Service Name */}
       <div>
-        <label className={labelClass}>Product / Service Name</label>
+        <label className={labelClass}>{t("input.productName")}</label>
         <Input
           type="text"
           value={productName}
           onChange={(e) => setProductName(e.target.value)}
-          placeholder="e.g. AdCopyGen"
+          placeholder={t("input.productName.placeholder")}
           required
           className={inputClass}
         />
@@ -125,11 +127,11 @@ export function InputForm({ onGenerate, isLoading }: InputFormProps) {
 
       {/* Short Description */}
       <div>
-        <label className={labelClass}>Short Description</label>
+        <label className={labelClass}>{t("input.description")}</label>
         <Textarea
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          placeholder="What does it do? What problem does it solve?"
+          placeholder={t("input.description.placeholder")}
           required
           rows={3}
           className={textareaClass}
@@ -138,12 +140,12 @@ export function InputForm({ onGenerate, isLoading }: InputFormProps) {
 
       {/* Target Audience */}
       <div>
-        <label className={labelClass}>Target Audience</label>
+        <label className={labelClass}>{t("input.targetAudience")}</label>
         <Input
           type="text"
           value={targetAudience}
           onChange={(e) => setTargetAudience(e.target.value)}
-          placeholder="e.g. SaaS founders, busy moms"
+          placeholder={t("input.targetAudience.placeholder")}
           required
           className={inputClass}
         />
@@ -151,13 +153,13 @@ export function InputForm({ onGenerate, isLoading }: InputFormProps) {
 
       {/* Tone of Voice */}
       <div>
-        <label className={labelClass}>Tone of Voice</label>
+        <label className={labelClass}>{t("input.tone")}</label>
         <ToneSelector value={tone} onChange={setTone} />
       </div>
 
       {/* Copy Type */}
       <div>
-        <label className={labelClass}>Copy Type</label>
+        <label className={labelClass}>{t("input.copyType")}</label>
         <CopyTypeSelector value={copyType} onChange={setCopyType} />
       </div>
 
@@ -172,15 +174,15 @@ export function InputForm({ onGenerate, isLoading }: InputFormProps) {
       {/* Key Benefits / USPs */}
       <div>
         <label className={labelClass}>
-          Key Benefits / USPs{" "}
+          {t("input.keyBenefits")}{" "}
           <span className="normal-case tracking-normal font-normal text-muted-foreground/60">
-            (optional)
+            {t("input.optional")}
           </span>
         </label>
         <Textarea
           value={keyBenefits}
           onChange={(e) => setKeyBenefits(e.target.value)}
-          placeholder="Enter key selling points..."
+          placeholder={t("input.keyBenefits.placeholder")}
           rows={3}
           className={textareaClass}
         />
@@ -189,16 +191,16 @@ export function InputForm({ onGenerate, isLoading }: InputFormProps) {
       {/* Competitor / Differentiation */}
       <div>
         <label className={labelClass}>
-          Competitor / Differentiation{" "}
+          {t("input.competitor")}{" "}
           <span className="normal-case tracking-normal font-normal text-muted-foreground/60">
-            (optional)
+            {t("input.optional")}
           </span>
         </label>
         <Input
           type="text"
           value={competitor}
           onChange={(e) => setCompetitor(e.target.value)}
-          placeholder="What makes this different?"
+          placeholder={t("input.competitor.placeholder")}
           className={inputClass}
         />
       </div>
@@ -206,16 +208,16 @@ export function InputForm({ onGenerate, isLoading }: InputFormProps) {
       {/* Character Limit */}
       <div>
         <label className={labelClass}>
-          Character Limit{" "}
+          {t("input.charLimit")}{" "}
           <span className="normal-case tracking-normal font-normal text-muted-foreground/60">
-            (optional)
+            {t("input.optional")}
           </span>
         </label>
         <Input
           type="number"
           value={charLimit}
           onChange={(e) => setCharLimit(e.target.value)}
-          placeholder="e.g. 150 for tweets"
+          placeholder={t("input.charLimit.placeholder")}
           min={1}
           className={inputClass}
         />
@@ -223,7 +225,7 @@ export function InputForm({ onGenerate, isLoading }: InputFormProps) {
 
       {/* Number of Variations */}
       <div>
-        <label className={labelClass}>Number of Variations</label>
+        <label className={labelClass}>{t("input.variations")}</label>
         <div className="flex gap-3">
           {VARIATION_OPTIONS.map((count) => {
             const isSelected = numberOfVariations === count;
@@ -284,12 +286,12 @@ export function InputForm({ onGenerate, isLoading }: InputFormProps) {
           {isLoading ? (
             <>
               <Loader2 className="size-5 animate-spin" />
-              <span>Generating...</span>
+              <span>{t("input.generating")}</span>
             </>
           ) : (
             <>
               <Sparkles className="size-5" />
-              <span>Generate Copy</span>
+              <span>{t("input.generate")}</span>
             </>
           )}
         </span>

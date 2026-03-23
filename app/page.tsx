@@ -9,6 +9,7 @@ import { InputForm } from "@/components/InputForm";
 import { OutputPanel } from "@/components/OutputPanel";
 import { FavoritesPanel } from "@/components/FavoritesPanel";
 import { useFavorites } from "@/hooks/useFavorites";
+import { useT } from "@/hooks/useLocale";
 import { GenerateRequest } from "@/lib/types";
 
 export default function Home() {
@@ -18,6 +19,7 @@ export default function Home() {
   const [currentRequest, setCurrentRequest] = useState<GenerateRequest | null>(null);
   const [showFavorites, setShowFavorites] = useState(false);
 
+  const t = useT();
   const { favorites, toggleFavorite, isFavorited, clearAll, groupedByType } = useFavorites();
 
   async function handleGenerate(data: GenerateRequest) {
@@ -41,7 +43,7 @@ export default function Home() {
       const response = await res.json();
       setCopies(response.copies);
     } catch (err) {
-      const message = err instanceof Error ? err.message : "Something went wrong";
+      const message = err instanceof Error ? err.message : t("toast.error");
       setError(message);
       toast.error(message);
     } finally {
@@ -71,7 +73,7 @@ export default function Home() {
         return updated;
       });
     } catch (err) {
-      const message = err instanceof Error ? err.message : "Something went wrong";
+      const message = err instanceof Error ? err.message : t("toast.error");
       toast.error(message);
     }
   }
@@ -83,7 +85,7 @@ export default function Home() {
 
   function handleCopy(text: string) {
     navigator.clipboard.writeText(text);
-    toast.success("Copied to clipboard!");
+    toast.success(t("toast.copied"));
   }
 
   return (

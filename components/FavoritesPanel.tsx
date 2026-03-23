@@ -13,6 +13,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { FavoriteItem, CopyType, COPY_TYPE_LABELS } from "@/lib/types";
+import { useT } from "@/hooks/useLocale";
 
 interface FavoritesPanelProps {
   isOpen: boolean;
@@ -24,6 +25,7 @@ interface FavoritesPanelProps {
 }
 
 function CopyButton({ text }: { text: string }) {
+  const t = useT();
   const [copied, setCopied] = useState(false);
 
   const handleCopy = useCallback(async () => {
@@ -41,16 +43,17 @@ function CopyButton({ text }: { text: string }) {
       variant="ghost"
       size="icon-sm"
       onClick={handleCopy}
-      title="Copy to clipboard"
+      title={t("card.copyToClipboard")}
       className="shrink-0 text-muted-foreground hover:text-foreground"
     >
       {copied ? <Check className="size-3.5 text-green-500" /> : <Clipboard className="size-3.5" />}
-      <span className="sr-only">Copy</span>
+      <span className="sr-only">{t("favorites.copy") || "Copy"}</span>
     </Button>
   );
 }
 
 function ClearAllButton({ onClearAll }: { onClearAll: () => void }) {
+  const t = useT();
   const [confirmPending, setConfirmPending] = useState(false);
 
   const handleClick = useCallback(() => {
@@ -71,7 +74,7 @@ function ClearAllButton({ onClearAll }: { onClearAll: () => void }) {
       className="text-xs"
     >
       <Trash2 className="size-3.5" />
-      {confirmPending ? "Are you sure?" : "Clear All"}
+      {confirmPending ? t("favorites.confirmClear") : t("favorites.clearAll")}
     </Button>
   );
 }
@@ -84,6 +87,7 @@ export function FavoritesPanel({
   onRemove,
   onClearAll,
 }: FavoritesPanelProps) {
+  const t = useT();
   const [copyAllDone, setCopyAllDone] = useState(false);
 
   const handleCopyAll = useCallback(async () => {
@@ -95,7 +99,8 @@ export function FavoritesPanel({
       FavoriteItem[]
     ][]) {
       if (!items || items.length === 0) continue;
-      const { label, emoji } = COPY_TYPE_LABELS[type];
+      const { emoji } = COPY_TYPE_LABELS[type];
+      const label = t(`copyType.${type}`);
       lines.push(`${emoji} ${label}`);
       lines.push("─".repeat(30));
       items.forEach((item) => lines.push(`• ${item.text}`));
@@ -109,7 +114,7 @@ export function FavoritesPanel({
     } catch {
       // Clipboard API unavailable
     }
-  }, [favorites, groupedByType]);
+  }, [favorites, groupedByType, t]);
 
   const groupEntries = Object.entries(groupedByType) as [
     CopyType,
@@ -128,7 +133,7 @@ export function FavoritesPanel({
           <div className="flex items-center gap-2">
             <Heart className="size-4 text-rose-400 fill-rose-400" />
             <SheetTitle className="text-base font-semibold">
-              Favorites
+              {t("favorites.title")}
             </SheetTitle>
             {favorites.length > 0 && (
               <Badge variant="secondary" className="text-xs">
@@ -143,7 +148,7 @@ export function FavoritesPanel({
             className="text-muted-foreground hover:text-foreground"
           >
             ✕
-            <span className="sr-only">Close</span>
+            <span className="sr-only">{t("favorites.close")}</span>
           </Button>
         </SheetHeader>
 
@@ -153,10 +158,10 @@ export function FavoritesPanel({
             <div className="flex flex-col items-center justify-center h-full gap-3 py-16 text-center">
               <Heart className="size-10 text-muted-foreground/30" />
               <p className="text-sm font-medium text-muted-foreground">
-                No favorites yet
+                {t("favorites.empty")}
               </p>
               <p className="text-xs text-muted-foreground/60 max-w-[200px]">
-                Star your best copy to save it here
+                {t("favorites.emptyHint")}
               </p>
             </div>
           ) : (
@@ -164,7 +169,8 @@ export function FavoritesPanel({
               <AnimatePresence initial={false}>
                 {groupEntries.map(([type, items]) => {
                   if (!items || items.length === 0) return null;
-                  const { label, emoji } = COPY_TYPE_LABELS[type];
+                  const { emoji } = COPY_TYPE_LABELS[type];
+                  const label = t(`copyType.${type}`);
                   return (
                     <motion.section
                       key={type}
@@ -197,11 +203,11 @@ export function FavoritesPanel({
                                   variant="ghost"
                                   size="icon-sm"
                                   onClick={() => onRemove(item.text)}
-                                  title="Remove from favorites"
+                                  title={t("favorites.remove")}
                                   className="shrink-0 text-muted-foreground hover:text-destructive"
                                 >
                                   <Trash2 className="size-3.5" />
-                                  <span className="sr-only">Remove</span>
+                                  <span className="sr-only">{t("favorites.remove")}</span>
                                 </Button>
                               </div>
                             </motion.div>
@@ -230,7 +236,7 @@ export function FavoritesPanel({
               ) : (
                 <ClipboardList className="size-3.5" />
               )}
-              {copyAllDone ? "Copied!" : "Copy All"}
+              {copyAllDone ? t("favorites.copied") : t("favorites.copyAll")}
             </Button>
             <ClearAllButton onClearAll={onClearAll} />
           </div>
