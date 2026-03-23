@@ -255,8 +255,12 @@ export function InputForm({ onGenerate, isLoading }: InputFormProps) {
         disabled={isDisabled}
         whileHover={!isDisabled ? { scale: 1.01 } : {}}
         whileTap={!isDisabled ? { scale: 0.98 } : {}}
-        transition={{ type: "spring", stiffness: 400, damping: 20 }}
-        animate={isLoading ? { opacity: [1, 0.85, 1] } : { opacity: 1 }}
+        transition={
+          isLoading
+            ? { opacity: { duration: 1.2, repeat: Infinity, repeatType: "mirror" as const, ease: "easeInOut" }, type: "spring", stiffness: 400, damping: 20 }
+            : { type: "spring", stiffness: 400, damping: 20 }
+        }
+        animate={isLoading ? { opacity: 0.85 } : { opacity: 1 }}
         className={cn(
           "relative w-full h-14 rounded-xl font-bold text-white text-base overflow-hidden",
           "bg-gradient-to-r from-violet-600 to-purple-600",
