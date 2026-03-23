@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import { LocaleProvider } from "@/hooks/useLocale";
 import { Toaster } from "@/components/ui/sonner";
 
 const inter = Inter({
@@ -31,8 +32,10 @@ export default function RootLayout({
           defaultTheme="dark"
           enableSystem
         >
-          {children}
-          <Toaster richColors position="bottom-right" />
+          <LocaleProvider>
+            {children}
+            <Toaster richColors position="bottom-right" />
+          </LocaleProvider>
         </ThemeProvider>
       </body>
     </html>

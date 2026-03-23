@@ -6,6 +6,7 @@ import { useTheme } from "next-themes";
 import { Sparkles, Sun, Moon, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useLocale, useT } from "@/hooks/useLocale";
 
 interface HeaderProps {
   onToggleFavorites: () => void;
@@ -14,6 +15,8 @@ interface HeaderProps {
 
 export function Header({ onToggleFavorites, favoritesCount }: HeaderProps) {
   const { theme, setTheme } = useTheme();
+  const { locale, setLocale } = useLocale();
+  const t = useT();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -61,7 +64,7 @@ export function Header({ onToggleFavorites, favoritesCount }: HeaderProps) {
             </div>
             {/* Tagline — hidden on mobile */}
             <p className="hidden sm:block text-[11px] tracking-wide text-muted-foreground/60 leading-none mt-0.5 pl-8">
-              AI-powered marketing copy in seconds
+              {t("header.tagline")}
             </p>
           </div>
 
@@ -96,6 +99,17 @@ export function Header({ onToggleFavorites, favoritesCount }: HeaderProps) {
                   </motion.span>
                 )}
               </AnimatePresence>
+            </Button>
+
+            {/* Language toggle */}
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setLocale(locale === "en" ? "zh" : "en")}
+              aria-label={t("lang.toggle")}
+              className="text-muted-foreground hover:text-foreground transition-colors text-sm font-bold"
+            >
+              {locale === "en" ? "中" : "EN"}
             </Button>
 
             {/* Dark mode toggle */}
