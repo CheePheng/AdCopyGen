@@ -1,5 +1,5 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { SYSTEM_PROMPT, buildUserPrompt } from "./prompts";
+import { buildSystemPrompt, buildUserPrompt } from "./prompts";
 import type { GenerateRequest } from "./types";
 
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_GEMINI_API_KEY || "");
@@ -15,7 +15,7 @@ function stripMarkdownBackticks(text: string): string {
 export async function generateCopy(data: GenerateRequest): Promise<string[]> {
   const model = genAI.getGenerativeModel({
     model: "gemini-2.0-flash",
-    systemInstruction: SYSTEM_PROMPT,
+    systemInstruction: buildSystemPrompt(data.language),
   });
 
   const userPrompt = buildUserPrompt(data);

@@ -16,7 +16,7 @@ import {
 import { CopyTypeSelector } from "@/components/CopyTypeSelector";
 import { ToneSelector } from "@/components/ToneSelector";
 import { FrameworkSelector } from "@/components/FrameworkSelector";
-import { useT } from "@/hooks/useLocale";
+import { useT, useLocale } from "@/hooks/useLocale";
 
 interface InputFormProps {
   onGenerate: (data: GenerateRequest) => void;
@@ -48,6 +48,7 @@ const textareaClass = cn(
 
 export function InputForm({ onGenerate, isLoading }: InputFormProps) {
   const t = useT();
+  const { locale } = useLocale();
   const [productName, setProductName] = useState("");
   const [description, setDescription] = useState("");
   const [targetAudience, setTargetAudience] = useState("");
@@ -87,6 +88,7 @@ export function InputForm({ onGenerate, isLoading }: InputFormProps) {
         ...(charLimit && !isNaN(Number(charLimit)) && Number(charLimit) > 0
           ? { charLimit: Number(charLimit) }
           : {}),
+        language: locale,
       };
 
       onGenerate(request);
@@ -106,6 +108,7 @@ export function InputForm({ onGenerate, isLoading }: InputFormProps) {
       keyBenefits,
       competitor,
       charLimit,
+      locale,
       onGenerate,
     ]
   );

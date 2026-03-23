@@ -33,6 +33,7 @@ export interface GenerateRequest {
   charLimit?: number;
   numberOfVariations: VariationCount;
   framework?: Framework;
+  language?: "en" | "zh";
 }
 
 export interface GenerateResponse {
