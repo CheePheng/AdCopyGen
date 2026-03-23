@@ -85,6 +85,11 @@
   --sidebar-border: oklch(0.88 0.02 280);
   --sidebar-ring: oklch(0.54 0.22 293);
 
+  /* Glow shadows */
+  --glow-sm: 0 0 15px oklch(0.54 0.22 293 / 0.12);
+  --glow-md: 0 0 30px oklch(0.54 0.22 293 / 0.20), 0 0 60px oklch(0.54 0.22 293 / 0.08);
+  --glow-lg: 0 0 50px oklch(0.54 0.22 293 / 0.25), 0 0 100px oklch(0.54 0.22 293 / 0.10);
+
   /* Glass-morphism tokens */
   --glass-bg: rgba(255, 255, 255, 0.65);
   --glass-border: rgba(139, 92, 246, 0.18);
@@ -97,23 +102,23 @@
    DARK MODE — Ultra-premium deep violet palette
    ============================================================ */
 .dark {
-  --background: oklch(0.10 0.015 280);
+  --background: oklch(0.07 0.005 280);
   --foreground: oklch(0.95 0.01 280);
-  --card: oklch(0.14 0.02 280);
+  --card: oklch(0.10 0.012 280);
   --card-foreground: oklch(0.95 0.01 280);
-  --popover: oklch(0.13 0.018 280);
+  --popover: oklch(0.09 0.010 280);
   --popover-foreground: oklch(0.95 0.01 280);
   --primary: oklch(0.68 0.20 293);      /* violet-400 */
   --primary-foreground: oklch(0.10 0.015 280);
   --secondary: oklch(0.20 0.04 293);
   --secondary-foreground: oklch(0.90 0.04 293);
-  --muted: oklch(0.18 0.025 280);
+  --muted: oklch(0.14 0.018 280);
   --muted-foreground: oklch(0.62 0.04 280);
   --accent: oklch(0.22 0.06 293);
   --accent-foreground: oklch(0.90 0.06 293);
   --destructive: oklch(0.704 0.191 22.216);
   --border: oklch(1 0 0 / 8%);
-  --input: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 6%);
   --ring: oklch(0.68 0.20 293);         /* violet-400 focus ring */
   --chart-1: oklch(0.68 0.20 293);
   --chart-2: oklch(0.72 0.17 310);
@@ -129,12 +134,17 @@
   --sidebar-border: oklch(1 0 0 / 8%);
   --sidebar-ring: oklch(0.68 0.20 293);
 
+  /* Glow shadows */
+  --glow-sm: 0 0 15px oklch(0.68 0.20 293 / 0.15);
+  --glow-md: 0 0 30px oklch(0.68 0.20 293 / 0.25), 0 0 60px oklch(0.68 0.20 293 / 0.10);
+  --glow-lg: 0 0 50px oklch(0.68 0.20 293 / 0.35), 0 0 100px oklch(0.68 0.20 293 / 0.15);
+
   /* Glass-morphism tokens */
-  --glass-bg: rgba(15, 10, 30, 0.60);
-  --glass-border: rgba(139, 92, 246, 0.25);
+  --glass-bg: rgba(255, 255, 255, 0.03);
+  --glass-border: rgba(139, 92, 246, 0.15);
 
   /* Gradient background */
-  --gradient-bg: linear-gradient(135deg, oklch(0.10 0.015 280) 0%, oklch(0.12 0.03 293) 50%, oklch(0.10 0.02 260) 100%);
+  --gradient-bg: linear-gradient(135deg, oklch(0.07 0.005 280) 0%, oklch(0.09 0.02 293) 50%, oklch(0.07 0.012 260) 100%);
 }
 
 /* ============================================================
@@ -166,6 +176,23 @@
   50%       { box-shadow: 0 0 35px oklch(0.68 0.20 293 / 0.6), 0 0 60px oklch(0.68 0.20 293 / 0.2); }
 }
 
+@keyframes glow-breathe {
+  0%, 100% { opacity: 0.4; }
+  50%      { opacity: 1; }
+}
+
+@keyframes card-shimmer {
+  0%   { background-position: -250% -250%; }
+  100% { background-position: 250% 250%; }
+}
+
+@keyframes orb-drift {
+  0%   { transform: translate(0, 0) scale(1); }
+  33%  { transform: translate(30px, -25px) scale(1.05); }
+  66%  { transform: translate(-20px, 15px) scale(0.95); }
+  100% { transform: translate(0, 0) scale(1); }
+}
+
 /* ============================================================
    BASE LAYER
    ============================================================ */
@@ -184,7 +211,7 @@
   }
 
   html::-webkit-scrollbar {
-    width: 6px;
+    width: 4px;
   }
 
   html::-webkit-scrollbar-track {
@@ -226,8 +253,8 @@
 .glass {
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
-  backdrop-filter: blur(16px) saturate(180%);
-  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
 }
 
 /* Premium gradient text */
@@ -313,4 +340,102 @@
     oklch(0.68 0.20 293 / 0.5),
     transparent
   );
+}
+
+/* Card shimmer overlay — Linear-style diagonal sweep */
+.card-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+.card-shimmer::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    135deg,
+    transparent 40%,
+    oklch(0.68 0.20 293 / 0.06) 50%,
+    transparent 60%
+  );
+  background-size: 250% 250%;
+  animation: card-shimmer 6s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Glow border effect on hover */
+.glow-border {
+  position: relative;
+}
+.glow-border::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: linear-gradient(
+    135deg,
+    oklch(0.68 0.20 293 / 0.5),
+    oklch(0.72 0.17 310 / 0.3),
+    oklch(0.65 0.16 260 / 0.5)
+  );
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  filter: blur(4px);
+}
+.glow-border:hover::after {
+  opacity: 1;
+}
+
+/* Noise texture overlay */
+.noise-overlay::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 256px 256px;
+}
+
+/* Breathing glow animation */
+.glow-breathe {
+  animation: glow-breathe 4s ease-in-out infinite;
+}
+
+/* Header bottom glow line */
+.header-glow-line::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 10%;
+  right: 10%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    oklch(0.68 0.20 293 / 0.6),
+    oklch(0.72 0.17 310 / 0.4),
+    oklch(0.68 0.20 293 / 0.6),
+    transparent
+  );
+  filter: blur(0.5px);
+}
+
+/* Premium scrollbar for panels */
+.premium-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+.premium-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.premium-scrollbar::-webkit-scrollbar-thumb {
+  background: oklch(0.68 0.20 293 / 0.3);
+  border-radius: 999px;
+}
+.premium-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: oklch(0.68 0.20 293 / 0.6);
 }
