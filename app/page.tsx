@@ -87,22 +87,27 @@ export default function Home() {
   }
 
   return (
-    <div className="relative min-h-screen overflow-hidden">
+    <div className="relative min-h-screen overflow-hidden noise-overlay">
       {/* Animated background gradient orbs */}
       <motion.div
-        className="pointer-events-none absolute -top-32 -left-32 w-[600px] h-[600px] rounded-full bg-violet-500 opacity-20 blur-3xl"
+        className="pointer-events-none absolute -top-32 -left-32 w-[800px] h-[800px] rounded-full bg-violet-500 opacity-15 blur-[120px]"
         animate={{ x: [0, 40, -20, 0], y: [0, -30, 50, 0] }}
-        transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
+        transition={{ duration: 35, repeat: Infinity, ease: "easeInOut" }}
       />
       <motion.div
-        className="pointer-events-none absolute top-1/3 -right-48 w-[500px] h-[500px] rounded-full bg-indigo-500 opacity-20 blur-3xl"
+        className="pointer-events-none absolute top-1/3 -right-48 w-[700px] h-[700px] rounded-full bg-indigo-500 opacity-15 blur-[120px]"
         animate={{ x: [0, -50, 30, 0], y: [0, 40, -20, 0] }}
+        transition={{ duration: 40, repeat: Infinity, ease: "easeInOut" }}
+      />
+      <motion.div
+        className="pointer-events-none absolute bottom-0 left-1/3 w-[600px] h-[600px] rounded-full bg-purple-500 opacity-15 blur-[120px]"
+        animate={{ x: [0, 30, -40, 0], y: [0, -50, 20, 0] }}
         transition={{ duration: 30, repeat: Infinity, ease: "easeInOut" }}
       />
       <motion.div
-        className="pointer-events-none absolute bottom-0 left-1/3 w-[400px] h-[400px] rounded-full bg-purple-500 opacity-20 blur-3xl"
-        animate={{ x: [0, 30, -40, 0], y: [0, -50, 20, 0] }}
-        transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
+        className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full bg-violet-600 opacity-10 blur-[120px]"
+        animate={{ scale: [1, 1.1, 1] }}
+        transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
       />
 
       {/* Content layer */}
@@ -112,15 +117,15 @@ export default function Home() {
           favoritesCount={favorites.length}
         />
 
-        <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
-          <div className="grid grid-cols-1 lg:grid-cols-[minmax(400px,1fr)_1.5fr] gap-6">
+        <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
+          <div className="grid grid-cols-1 lg:grid-cols-[minmax(400px,1fr)_1.5fr] gap-8">
             {/* Left panel: Input form */}
-            <div className="backdrop-blur-sm bg-white/40 dark:bg-slate-900/40 border border-white/20 dark:border-slate-700/30 rounded-2xl p-6 h-fit lg:max-h-[calc(100vh-8rem)] lg:overflow-y-auto">
+            <div className="glass glow-border premium-scrollbar rounded-2xl p-6 h-fit lg:max-h-[calc(100vh-9rem)] lg:overflow-y-auto">
               <InputForm onGenerate={handleGenerate} isLoading={isLoading} />
             </div>
 
             {/* Right panel: Output */}
-            <div className="backdrop-blur-sm bg-white/40 dark:bg-slate-900/40 border border-white/20 dark:border-slate-700/30 rounded-2xl p-6 lg:max-h-[calc(100vh-8rem)] lg:overflow-y-auto">
+            <div className="glass glow-border premium-scrollbar rounded-2xl p-6 lg:max-h-[calc(100vh-9rem)] lg:overflow-y-auto">
               <OutputPanel
                 copies={copies}
                 isLoading={isLoading}
