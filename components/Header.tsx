@@ -74,7 +74,7 @@ export function Header({ onToggleFavorites, favoritesCount }: HeaderProps) {
               aria-label={`Favorites${favoritesCount > 0 ? ` (${favoritesCount})` : ""}`}
               className="relative text-muted-foreground hover:text-rose-500 dark:hover:text-rose-400 transition-colors"
             >
-              <Heart className="size-4.5" />
+              <Heart className="size-5" />
               <AnimatePresence>
                 {favoritesCount > 0 && (
                   <motion.span
@@ -116,7 +116,7 @@ export function Header({ onToggleFavorites, favoritesCount }: HeaderProps) {
                       transition={{ duration: 0.25, ease: "easeInOut" }}
                       className="flex items-center justify-center"
                     >
-                      <Sun className="size-4.5 text-amber-400" />
+                      <Sun className="size-5 text-amber-400" />
                     </motion.span>
                   ) : (
                     <motion.span
@@ -127,7 +127,7 @@ export function Header({ onToggleFavorites, favoritesCount }: HeaderProps) {
                       transition={{ duration: 0.25, ease: "easeInOut" }}
                       className="flex items-center justify-center"
                     >
-                      <Moon className="size-4.5 text-violet-400" />
+                      <Moon className="size-5 text-violet-400" />
                     </motion.span>
                   )
                 ) : (
@@ -136,7 +136,7 @@ export function Header({ onToggleFavorites, favoritesCount }: HeaderProps) {
                     key="placeholder"
                     className="flex items-center justify-center"
                   >
-                    <Sun className="size-4.5 opacity-0" />
+                    <Sun className="size-5 opacity-0" />
                   </motion.span>
                 )}
               </AnimatePresence>

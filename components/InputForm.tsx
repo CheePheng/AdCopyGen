@@ -25,7 +25,7 @@ interface InputFormProps {
 const VARIATION_OPTIONS: VariationCount[] = [3, 5, 10];
 
 const labelClass =
-  "text-[11px] font-semibold uppercase tracking-wider text-muted-foreground mb-1.5 block";
+  "text-xs font-medium uppercase tracking-wide text-muted-foreground mb-2 block";
 
 const inputClass = cn(
   "h-10 w-full rounded-xl transition-all duration-200",
@@ -109,7 +109,7 @@ export function InputForm({ onGenerate, isLoading }: InputFormProps) {
   );
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6 p-6">
+    <form onSubmit={handleSubmit} className="space-y-5">
       {/* Product / Service Name */}
       <div>
         <label className={labelClass}>Product / Service Name</label>
