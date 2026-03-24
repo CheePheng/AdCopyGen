@@ -1,9 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
-import { generateCopy } from "@/lib/gemini";
+import { generateCopy } from "@/lib/groq";
 import type { GenerateRequest } from "@/lib/types";
 
 function delay(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+function isRateLimitError(err: any): boolean {
+  if (err?.status === 429) return true;
+  const msg = String(err?.message || "");
+  return msg.includes("429") || msg.includes("RESOURCE_EXHAUSTED") || msg.includes("rate limit");
 }
 
 export async function POST(req: NextRequest) {
@@ -21,25 +27,26 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ copies });
       } catch (err: any) {
         lastError = err;
-        if (err?.status === 429) {
-          // Rate limited — wait longer on each retry
-          await delay(2000 * (attempt + 1));
+        console.error(`[generate] Attempt ${attempt + 1} failed:`, err?.status, err?.message);
+        if (isRateLimitError(err)) {
+          // Rate limited — wait 5s, 10s, 15s (aggressive backoff for free tier)
+          await delay(5000 * (attempt + 1));
         } else if (attempt < 2) {
           // Other error — brief pause before retry
-          await delay(500);
+          await delay(1000);
         }
       }
     }
 
     // All attempts failed
-    if (lastError?.status === 429) {
+    if (isRateLimitError(lastError)) {
       return NextResponse.json(
         { error: "You're generating too fast. Wait a moment and try again." },
         { status: 429 }
       );
     }
     return NextResponse.json(
-      { error: "Generation failed. Please try again." },
+      { error: lastError?.message || "Generation failed. Please try again." },
       { status: 500 }
     );
   } catch (error) {

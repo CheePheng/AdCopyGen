@@ -122,25 +122,29 @@ export default function Home() {
         <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
           <div className="grid grid-cols-1 lg:grid-cols-[minmax(400px,1fr)_1.5fr] gap-8">
             {/* Left panel: Input form */}
-            <div className="glass glow-border premium-scrollbar rounded-2xl p-6 lg:max-h-[calc(100vh-9rem)] lg:overflow-y-auto">
-              <InputForm onGenerate={handleGenerate} isLoading={isLoading} />
+            <div className="glass glow-border rounded-2xl lg:max-h-[calc(100vh-9rem)]">
+              <div className="premium-scrollbar p-6 h-full overflow-y-auto">
+                <InputForm onGenerate={handleGenerate} isLoading={isLoading} />
+              </div>
             </div>
 
             {/* Right panel: Output */}
-            <div className="glass glow-border premium-scrollbar rounded-2xl p-6 lg:max-h-[calc(100vh-9rem)] lg:overflow-y-auto">
-              <OutputPanel
-                copies={copies}
-                isLoading={isLoading}
-                copyType={currentRequest?.copyType ?? "ad-headlines"}
-                charLimit={currentRequest?.charLimit}
-                onCopy={handleCopy}
-                onToggleFavorite={(text) =>
-                  toggleFavorite(text, currentRequest?.copyType ?? "ad-headlines")
-                }
-                onRegenerate={handleRegenerateSingle}
-                onRegenerateAll={handleRegenerateAll}
-                isFavorited={isFavorited}
-              />
+            <div className="glass glow-border rounded-2xl lg:max-h-[calc(100vh-9rem)]">
+              <div className="premium-scrollbar p-6 h-full overflow-y-auto">
+                <OutputPanel
+                  copies={copies}
+                  isLoading={isLoading}
+                  copyType={currentRequest?.copyType ?? "ad-headlines"}
+                  charLimit={currentRequest?.charLimit}
+                  onCopy={handleCopy}
+                  onToggleFavorite={(text) =>
+                    toggleFavorite(text, currentRequest?.copyType ?? "ad-headlines")
+                  }
+                  onRegenerate={handleRegenerateSingle}
+                  onRegenerateAll={handleRegenerateAll}
+                  isFavorited={isFavorited}
+                />
+              </div>
             </div>
           </div>
         </main>

@@ -24,8 +24,8 @@ RULES:
   prompt += `
 
 OUTPUT FORMAT:
-Return ONLY a valid JSON array of strings. No markdown, no numbering, no explanations.
-Example: ["Copy 1 here", "Copy 2 here", "Copy 3 here"]`;
+Return ONLY a valid JSON object with a "copies" key containing an array of strings. No markdown, no numbering, no explanations.
+Example: {"copies": ["Copy 1 here", "Copy 2 here", "Copy 3 here"]}`;
 
   return prompt;
 }
