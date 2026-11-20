@@ -12,6 +12,7 @@ AI-powered marketing copywriter that generates ad headlines, email subject lines
 - **Premium UI**: Glassmorphism design with smooth animations and intuitive interactions
 - **Copy to Clipboard**: One-click copying with toast notifications for instant feedback
 - **Batch Regeneration**: Regenerate individual variations or all at once to explore different options
+- **English and Chinese interface**: Switch the whole UI between the two languages
 
 ## Tech Stack
 
@@ -19,7 +20,7 @@ AI-powered marketing copywriter that generates ad headlines, email subject lines
 - **Styling**: Tailwind CSS v4 with glassmorphism effects
 - **UI Components**: shadcn/ui and Base UI
 - **Animations**: Framer Motion for smooth interactions
-- **AI Integration**: Google Gemini API for intelligent copy generation
+- **AI Integration**: Groq API (Llama 3.3 70B), called from a Next.js route handler so the key stays on the server
 - **Icons**: Lucide React
 - **Theme Management**: next-themes for light/dark mode
 - **Notifications**: Sonner for toast notifications
@@ -29,13 +30,13 @@ AI-powered marketing copywriter that generates ad headlines, email subject lines
 ### Prerequisites
 
 - Node.js 18+ and npm
-- A free Google Gemini API key
+- A free Groq API key
 
 ### Installation
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/AdCopyGen.git
+git clone https://github.com/CheePheng/AdCopyGen.git
 cd AdCopyGen
 ```
 
@@ -49,9 +50,9 @@ npm install
 cp .env.example .env.local
 ```
 
-4. Add your Gemini API key to `.env.local`:
+4. Add your Groq API key to `.env.local`:
 ```
-NEXT_PUBLIC_GOOGLE_GEMINI_API_KEY=your_api_key_here
+GROQ_API_KEY=your_api_key_here
 ```
 
 5. Start the development server:
@@ -61,49 +62,41 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) in your browser to see the application.
 
-## Getting a Free Google Gemini API Key
+## Getting a Free Groq API Key
 
-1. Visit [Google AI Studio](https://aistudio.google.com/apikey)
-2. Sign in with your Google account (create one if needed)
-3. Click **"Create API Key"** button
-4. Select or create a Google Cloud project
-5. Copy the generated API key
-6. Paste it into your `.env.local` file as `NEXT_PUBLIC_GOOGLE_GEMINI_API_KEY`
+1. Go to the [GroqCloud console](https://console.groq.com/keys)
+2. Sign in or create an account
+3. Click **Create API Key** and copy the key
+4. Paste it into your `.env.local` file as `GROQ_API_KEY`
 
-The free tier includes generous daily quotas perfect for development and small-scale use.
+Groq's free tier is enough for development and light use.
 
 ## Project Structure
 
 ```
 AdCopyGen/
 ├── app/
-│   ├── api/
-│   │   └── generate/
-│   │       └── route.ts          # API endpoint for copy generation
+│   ├── api/generate/route.ts     # Server route that calls Groq
 │   ├── layout.tsx                # Root layout with theme provider
 │   └── page.tsx                  # Main application page
 ├── components/
-│   ├── CopyTypeSelector.tsx       # Copy type selection component
-│   ├── ToneSelector.tsx           # Tone option selector
-│   ├── FrameworkSelector.tsx      # Framework selection component
-│   ├── GeneratedCopies.tsx        # Display and manage generated copy
-│   ├── FavoritesPanel.tsx         # View and manage saved favorites
-│   └── ThemeToggle.tsx            # Light/dark mode switcher
+│   ├── InputForm.tsx             # Product, audience and options form
+│   ├── CopyTypeSelector.tsx      # Copy type selection
+│   ├── ToneSelector.tsx          # Tone selection
+│   ├── FrameworkSelector.tsx     # Copywriting framework selection
+│   ├── OutputPanel.tsx           # Generated variations
+│   ├── CopyCard.tsx              # One variation, with copy and favourite actions
+│   ├── FavoritesPanel.tsx        # Saved favourites
+│   └── ui/                       # shadcn/ui components
 ├── hooks/
-│   ├── useFavorites.ts            # Favorites management logic
-│   └── useTheme.ts                # Theme management hook
+│   ├── useFavorites.ts           # Favourites, saved in localStorage
+│   └── useLocale.tsx             # English and Chinese UI
 ├── lib/
-│   ├── api.ts                     # API client functions
-│   └── constants.ts               # Copy types, tones, frameworks
-├── public/
-│   └── assets/                    # Images and static files
-├── styles/
-│   └── globals.css                # Global styles and animations
-├── .env.example                   # Environment variables template
-├── next.config.ts                 # Next.js configuration
-├── tailwind.config.ts             # Tailwind CSS configuration
-├── tsconfig.json                  # TypeScript configuration
-└── package.json                   # Project dependencies
+│   ├── groq.ts                   # Groq client and model
+│   ├── prompts.ts                # Prompt builder (types, tones, frameworks)
+│   ├── i18n.ts                   # UI translations
+│   └── types.ts                  # Shared types
+└── .env.example                  # GROQ_API_KEY template
 ```
 
 ## Development Commands
@@ -134,7 +127,7 @@ git push origin main
 
 5. Add environment variables:
    - Click **"Environment Variables"**
-   - Add `NEXT_PUBLIC_GOOGLE_GEMINI_API_KEY` with your API key value
+   - Add `GROQ_API_KEY` with your API key value
 
 6. Click **"Deploy"** and wait for the build to complete
 
@@ -142,7 +135,7 @@ Your application will be live at a URL like `https://adcopygen-[username].vercel
 
 ### Important Note on API Keys
 
-Keep your Gemini API key secure:
+Keep your Groq API key secure. The app only reads it on the server, so it never reaches the browser:
 - Never commit `.env.local` to git
 - The `.env.example` file shows the expected format
 - Always add your actual key via Vercel's environment variables dashboard
